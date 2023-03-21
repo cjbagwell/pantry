@@ -15,10 +15,14 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="?attr/colorPrimary"/>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <include
+        layout="@layout/content_add_ingredient"
+        app:layout_anchor="@+id/imageView"
+        app:layout_anchorGravity="center"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

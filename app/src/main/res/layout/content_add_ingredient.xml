@@ -31,4 +31,11 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="Waiting for you to Scan the Barcode"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView"/>
 </RelativeLayout>
