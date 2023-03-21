@@ -9,13 +9,47 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Main Activity" />
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="60dp"
+        android:text="Main Activity"
+        android:textSize="30dp" />
 
     <Button
         android:id="@+id/addIngredientButton"
-        android:layout_width="wrap_content"
+        android:layout_width="205dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="266dp"
         android:text="Add Ingredient" />
+
+    <Button
+        android:id="@+id/removeIngredientButton"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addIngredientButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Remove Ingredient" />
+
+    <Button
+        android:id="@+id/viewPantryButton"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/removeIngredientButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="View Pantry" />
+
+    <Button
+        android:id="@+id/refillPantryButton"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewPantryButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Refill Pantry" />
 </RelativeLayout>

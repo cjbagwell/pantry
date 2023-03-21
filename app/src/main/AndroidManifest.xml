@@ -12,6 +12,15 @@
         android:theme="@style/Theme.Pantry"
         tools:targetApi="31">
         <activity
+            android:name=".RefillPantryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemoveIngredientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewPantryActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddIngredientActivity"
             android:exported="false" />
         <activity
