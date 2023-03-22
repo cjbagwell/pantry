@@ -12,10 +12,11 @@ import android.view.SurfaceView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
+import com.google.mlkit.vision.barcode.common.Barcode;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class AddIngredientActivity extends AppCompatActivity {
     TextView textView;
     TextView pantryItemPreview;
     ImageView imageView;
-    BarcodeDetector barcodeDetector;
+    ;
 
 
 
@@ -42,13 +43,15 @@ public class AddIngredientActivity extends AppCompatActivity {
         pantryItemPreview = findViewById(R.id.pantryItemPreview);
         imageView = findViewById(R.id.imageView);
 
-        barcodeDetector = new BarcodeDetector.Builder(this)
-                .setBarcodeFormats(Barcode.ALL_FORMATS).build();
-
-        cameraSource = new CameraSource.Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(720, 480)
-                .setAutoFocusEnabled(true) // TODO maybe make this a variable instead of just true
+        BarcodeScannerOptions options = new BarcodeScannerOptions
+                .Builder()
+                .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
                 .build();
+
+//        cameraSource = new CameraSource.Builder(this, barcodeDetector)
+//                .setRequestedPreviewSize(720, 480)
+//                .setAutoFocusEnabled(true) // TODO maybe make this a variable instead of just true
+//                .build();
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback(){
             @Override
