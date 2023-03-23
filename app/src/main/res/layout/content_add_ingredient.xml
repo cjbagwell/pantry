@@ -5,37 +5,38 @@
     android:layout_height="match_parent"
     tools:context=".AddIngredientActivity"
     tools:showIn="@layout/activity_add_ingredient">
-
-    <SurfaceView
-        android:id="@+id/cameraPreview"
+    <androidx.camera.view.PreviewView
+        android:id="@+id/preview_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"/>
+        android:layout_height="match_parent"
+        tools:context=".MainActivity" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cameraPreview"
-        android:layout_marginTop="20dp"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:text="Please focus on the barcode."
-        />
 
-    <TextView
-        android:id="@+id/pantryItemPreview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/cameraPreview"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="Waiting for you to Scan the Barcode"/>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textView"/>
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/cameraPreview"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:textSize="18sp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Please focus on the barcode."-->
+<!--        />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/pantryItemPreview"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_above="@id/cameraPreview"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Waiting for you to Scan the Barcode"/>-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_below="@+id/textView"/>-->
 </RelativeLayout>
