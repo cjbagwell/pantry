@@ -12,24 +12,30 @@ import android.view.SurfaceView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
+import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
-
-
+import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.camera.CameraSourceConfig;
+import com.google.mlkit.vision.camera.CameraXSource;
+import com.google.mlkit.vision.camera.DetectionTaskCallback;
+import com.google.mlkit.vision.common.InputImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddIngredientActivity extends AppCompatActivity {
 
     SurfaceView surfaceView;
-    CameraSource cameraSource;
+    CameraSourceConfig cameraSourceConfig;
     TextView textView;
     TextView pantryItemPreview;
     ImageView imageView;
-    ;
-
+    BarcodeScanner barcodeScanner;
+    InputImage inputImage;
 
 
     @Override
@@ -47,12 +53,26 @@ public class AddIngredientActivity extends AppCompatActivity {
                 .Builder()
                 .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
                 .build();
+//        inputImage = null;
 
-//        cameraSource = new CameraSource.Builder(this, barcodeDetector)
-//                .setRequestedPreviewSize(720, 480)
-//                .setAutoFocusEnabled(true) // TODO maybe make this a variable instead of just true
-//                .build();
+        barcodeScanner = BarcodeScanning.getClient();
 
+        cameraSourceConfig = new CameraSourceConfig.Builder(this, barcodeScanner, new DetectionTaskCallback<List<Barcode>>() {
+            @Override
+            public void onDetectionTaskReceived(@NonNull Task<List<Barcode>> task) {
+                List<Barcode> barcodes = task.getResult();
+                if(barcodes.isEmpty()){
+                    return;
+                }
+                for(int i=0; i< barcodes.size(); i++){
+                    Barcode curBarcode = barcodes.get(i);
+                    Toast.makeText(AddIngredientActivity.this, curBarcode.getRawValue(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
+                .setRequestedPreviewSize(720, 480)
+                .build();
+        CameraXSource cameraXSource = new CameraXSource(cameraSourceConfig);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback(){
             @Override
             public void surfaceCreated(SurfaceHolder holder){
@@ -62,8 +82,8 @@ public class AddIngredientActivity extends AppCompatActivity {
                     return;
                 }
                 try{
-                    cameraSource.start(holder);
-                } catch (IOException e) {
+                    cameraXSource.start();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -74,7 +94,7 @@ public class AddIngredientActivity extends AppCompatActivity {
             }
 
             @Override
-            public void surfaceDestroyed(@NonNull SurfaceHolder holder) {cameraSource.stop();}
+            public void surfaceDestroyed(@NonNull SurfaceHolder holder) {cameraXSource.stop();}
         });
     }
 }
