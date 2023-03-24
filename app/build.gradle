@@ -40,4 +40,5 @@ dependencies {
     implementation 'com.google.mlkit:barcode-scanning:17.0.3'
     implementation 'com.google.mlkit:camera:16.0.0-beta3'
     implementation 'com.google.guava:guava:29.0-android'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 }

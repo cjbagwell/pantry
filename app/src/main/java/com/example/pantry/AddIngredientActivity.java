@@ -20,9 +20,12 @@ import com.google.mlkit.vision.camera.CameraSourceConfig;
 import com.google.mlkit.vision.camera.CameraXSource;
 import com.google.mlkit.vision.camera.DetectionTaskCallback;
 import com.google.mlkit.vision.common.InputImage;
+
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
-public class AddIngredientActivity extends AppCompatActivity {
+public class AddIngredientActivity extends AppCompatActivity implements EdamamCommunicatorCallback {
 
     CameraSourceConfig cameraSourceConfig;
     TextView textView;
@@ -53,10 +56,17 @@ public class AddIngredientActivity extends AppCompatActivity {
                         if (barcodes.isEmpty()){
                             return;
                         }
+                        EdamamCommunicator communicator = new EdamamCommunicator();//.setInstance(AddIngredientActivity.this);
+                        communicator.setInstance(AddIngredientActivity.this);
+                        communicator.execute("049000000443");
+                        LinkedList<Ingredient> newIngredients = new LinkedList<Ingredient>();
                         for (int i = 0; i < barcodes.size(); i++){
-                            Toast.makeText(AddIngredientActivity.this, barcodes.get(i).getDisplayValue(), Toast.LENGTH_SHORT).show();
+                            String curUpc = barcodes.get(i).getDisplayValue();
+                            Toast.makeText(AddIngredientActivity.this, curUpc, Toast.LENGTH_SHORT).show();
+                            Ingredient curNewIngredient = null;
+                            //                            Ingredient curNewIngredient = com.getIngredientFromUPC(curUpc);
+                            newIngredients.add(curNewIngredient);
                         }
-//                        barcodeScanner.close(); //TODO: make the API Call
                     }
                 });
             }//onTaskDetectionReceived
@@ -76,4 +86,8 @@ public class AddIngredientActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }//onCreate
+    @Override
+    public void setResult(Ingredient result) {
+        System.out.println("We got an Asnyc Result!");
+    }
 }
