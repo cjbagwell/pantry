@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +29,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
     CameraSourceConfig cameraSourceConfig;
     TextView textView;
     BarcodeScanner barcodeScanner;
+    BarcodeScannerOptions barcodeScannerOptions;
     PreviewView previewView;
 
     @Override
@@ -37,12 +39,12 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
 
         // Find views
         previewView = findViewById(R.id.preview_view);
-        BarcodeScannerOptions options = new BarcodeScannerOptions
+        barcodeScannerOptions = new BarcodeScannerOptions
                 .Builder()
                 .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
                 .build();
 
-        barcodeScanner = BarcodeScanning.getClient(options);
+        barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
 
         cameraSourceConfig = new CameraSourceConfig.Builder(this, barcodeScanner, new DetectionTaskCallback<List<Barcode>>() {
             @Override
@@ -54,10 +56,11 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
                         if (barcodes.isEmpty()){
                             return;
                         }
+                        barcodeScanner.close();
                         PantryCommunicator communicator = new PantryCommunicator();//.setInstance(AddIngredientActivity.this);
                         communicator.setInstance(AddIngredientActivity.this);
                         communicator.execute("049000000443"); // Cocacola bottle upc for testing
-                        LinkedList<Ingredient> newIngredients = new LinkedList<Ingredient>();
+                        Toast.makeText(AddIngredientActivity.this, "We are sending a result", Toast.LENGTH_SHORT);
                     }
                 });
             }//onTaskDetectionReceived
@@ -80,5 +83,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
     @Override
     public void setResult(Ingredient result) {
         System.out.println("We got an Asnyc Result!");
+        Toast.makeText(this, "We Got an Result", Toast.LENGTH_LONG).show();
+        barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
     }
 }

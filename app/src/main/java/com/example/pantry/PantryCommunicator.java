@@ -29,9 +29,7 @@ public class PantryCommunicator extends AsyncTask<String, Void, Ingredient> {
     protected Ingredient doInBackground(String... upc) {
         PantryManager manager = new PantryManager(this.ctx);
         if(manager.isInDatabase(upc[0])){
-            Ingredient newIngredient = manager.getIngredient(upc[0]);
-            this.pantryCommunicatorCallback.setResult(newIngredient);
-            return newIngredient; //I don't understand where this is actually going... where does it get returned?
+            return manager.getIngredient(upc[0]);
         }
         //else get ingredient from API call to Edamam
         String parseUrl = this.BASE_URL + "/parser?upc=" + upc[0] +
@@ -67,16 +65,16 @@ public class PantryCommunicator extends AsyncTask<String, Void, Ingredient> {
             String foodContents = (String) obj2.get("foodContentsLabel");
             Ingredient newIngredient = new Ingredient(upc[0], label, image, 0);
             manager.addToDatabase(newIngredient);
-            pantryCommunicatorCallback.setResult(newIngredient);
-            return null;
+            return newIngredient;
         } catch (JSONException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-//    @Override
-//    protected void onPostExecute(Ingredient result){
-//        super.onPostExecute(result);
-//    }
+    @Override
+    protected void onPostExecute(Ingredient result){
+        super.onPostExecute(result);
+        this.pantryCommunicatorCallback.setResult(result);
+    }
 }
