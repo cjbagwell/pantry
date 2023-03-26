@@ -13,18 +13,27 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class EdamamCommunicator extends AsyncTask<String, Void, Ingredient> {
+public class PantryCommunicator extends AsyncTask<String, Void, Ingredient> {
     private final String API_KEY = "2a3f64a61dd57a26bf473ae4fe69410b";
     private final String API_ID = "3a6ef20f";
     private final String BASE_URL = "https://api.edamam.com/api/food-database";
-    private EdamamCommunicatorCallback edamamCommunicatorCallback;
+    private PantryCommunicatorCallback pantryCommunicatorCallback;
+    private Context ctx;
 
     void setInstance(Context context){
-        edamamCommunicatorCallback = (EdamamCommunicatorCallback) context;
+        pantryCommunicatorCallback = (PantryCommunicatorCallback) context;
+        this.ctx = context;
     }
 
     @Override
     protected Ingredient doInBackground(String... upc) {
+        PantryManager manager = new PantryManager(this.ctx);
+        if(manager.isInDatabase(upc[0])){
+            Ingredient newIngredient = manager.getIngredient(upc[0]);
+            this.pantryCommunicatorCallback.setResult(newIngredient);
+            return newIngredient; //I don't understand where this is actually going... where does it get returned?
+        }
+        //else get ingredient from API call to Edamam
         String parseUrl = this.BASE_URL + "/parser?upc=" + upc[0] +
                 "/&app_id=" + API_ID +
                 "&app_key=" + API_KEY;
@@ -57,7 +66,8 @@ public class EdamamCommunicator extends AsyncTask<String, Void, Ingredient> {
             String image = (String) obj2.get("image");
             String foodContents = (String) obj2.get("foodContentsLabel");
             Ingredient newIngredient = new Ingredient(upc[0], label, image, 0);
-            edamamCommunicatorCallback.setResult(newIngredient);
+            manager.addToDatabase(newIngredient);
+            pantryCommunicatorCallback.setResult(newIngredient);
             return null;
         } catch (JSONException e) {
             e.printStackTrace();

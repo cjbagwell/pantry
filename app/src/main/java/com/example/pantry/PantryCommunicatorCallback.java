@@ -1,5 +1,5 @@
 package com.example.pantry;
 
-public interface EdamamCommunicatorCallback {
+public interface PantryCommunicatorCallback {
     public void setResult(Ingredient result);
 }

@@ -8,7 +8,6 @@ import androidx.core.app.ActivityCompat;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -21,11 +20,10 @@ import com.google.mlkit.vision.camera.CameraXSource;
 import com.google.mlkit.vision.camera.DetectionTaskCallback;
 import com.google.mlkit.vision.common.InputImage;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AddIngredientActivity extends AppCompatActivity implements EdamamCommunicatorCallback {
+public class AddIngredientActivity extends AppCompatActivity implements PantryCommunicatorCallback {
 
     CameraSourceConfig cameraSourceConfig;
     TextView textView;
@@ -56,7 +54,7 @@ public class AddIngredientActivity extends AppCompatActivity implements EdamamCo
                         if (barcodes.isEmpty()){
                             return;
                         }
-                        EdamamCommunicator communicator = new EdamamCommunicator();//.setInstance(AddIngredientActivity.this);
+                        PantryCommunicator communicator = new PantryCommunicator();//.setInstance(AddIngredientActivity.this);
                         communicator.setInstance(AddIngredientActivity.this);
                         communicator.execute("049000000443"); // Cocacola bottle upc for testing
                         LinkedList<Ingredient> newIngredients = new LinkedList<Ingredient>();
