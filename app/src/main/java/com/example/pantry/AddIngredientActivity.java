@@ -58,15 +58,8 @@ public class AddIngredientActivity extends AppCompatActivity implements EdamamCo
                         }
                         EdamamCommunicator communicator = new EdamamCommunicator();//.setInstance(AddIngredientActivity.this);
                         communicator.setInstance(AddIngredientActivity.this);
-                        communicator.execute("049000000443");
+                        communicator.execute("049000000443"); // Cocacola bottle upc for testing
                         LinkedList<Ingredient> newIngredients = new LinkedList<Ingredient>();
-                        for (int i = 0; i < barcodes.size(); i++){
-                            String curUpc = barcodes.get(i).getDisplayValue();
-                            Toast.makeText(AddIngredientActivity.this, curUpc, Toast.LENGTH_SHORT).show();
-                            Ingredient curNewIngredient = null;
-                            //                            Ingredient curNewIngredient = com.getIngredientFromUPC(curUpc);
-                            newIngredients.add(curNewIngredient);
-                        }
                     }
                 });
             }//onTaskDetectionReceived

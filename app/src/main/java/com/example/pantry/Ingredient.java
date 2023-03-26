@@ -4,12 +4,12 @@ import android.graphics.Bitmap;
 import com.google.android.gms.vision.barcode.Barcode;
 
 public class Ingredient {
-    private Barcode barcode;
+    private String barcode;
     private String name;
     private String image;
     private int qtInPantry;
 
-    Ingredient(Barcode bar, String nam, String im, int qtInPan){
+    Ingredient(String bar, String nam, String im, int qtInPan){
         this.barcode = bar;
         this.name = nam;
         this.image = im;
@@ -29,11 +29,11 @@ public class Ingredient {
 
     // ********************* GETTERS AND SETTERS *****************************
 
-    public Barcode getBarcode() {
+    public String getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(Barcode barcode) {
+    public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
 

@@ -51,7 +51,13 @@ public class EdamamCommunicator extends AsyncTask<String, Void, Ingredient> {
             JSONArray array = jsonObject.getJSONArray("hints");
             JSONObject obj1 = array.getJSONObject(0);
             JSONObject obj2 = obj1.getJSONObject("food");
-            edamamCommunicatorCallback.setResult(null);
+            String label = (String) obj2.get("label");
+            String brand = (String) obj2.get("brand");
+            String category = (String) obj2.get("category");
+            String image = (String) obj2.get("image");
+            String foodContents = (String) obj2.get("foodContentsLabel");
+            Ingredient newIngredient = new Ingredient(upc[0], label, image, 0);
+            edamamCommunicatorCallback.setResult(newIngredient);
             return null;
         } catch (JSONException e) {
             e.printStackTrace();
