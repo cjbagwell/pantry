@@ -50,7 +50,7 @@ public class PantryManager extends SQLiteOpenHelper {
         cv.put(COLUMN_INGREDIENT_NAME, ingredient.getName());
         cv.put(COLUMN_IMAGE_URL, ingredient.getImage());
         cv.put(COLUMN_QUANTITY_IN_PANTRY, ingredient.getQtInPantry());
-        long insert = db.insert(ingredient.getBarcode(), null, cv);
+        long insert = db.insert(PANTRY_TABLE, null, cv);
         return insert == 1;
     }
 
