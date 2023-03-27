@@ -14,7 +14,6 @@ public class PantryManager extends SQLiteOpenHelper {
     public static final String COLUMN_INGREDIENT_NAME = "INGREDIENT_NAME";
     public static final String COLUMN_IMAGE_URL = "IMAGE_URL";
     public static final String COLUMN_QUANTITY_IN_PANTRY = "QUANTITY_IN_PANTRY";
-    public static final String COLUMN_ID = "ID";
 
     public PantryManager(@Nullable Context context) {
         super(context, "pantry.db", null, 1);
@@ -24,8 +23,7 @@ public class PantryManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE " + PANTRY_TABLE +
                 " (" +
-                COLUMN_ID + "INTEGER PRIMARY KEY, " +
-                COLUMN_BARCODE + " TEXT, " +
+                COLUMN_BARCODE + " TEXT PRIMARY KEY, " +
                 COLUMN_INGREDIENT_NAME + " TEXT, " +
                 COLUMN_IMAGE_URL + " TEXT, " +
                 COLUMN_QUANTITY_IN_PANTRY + " INTEGER" +
@@ -36,31 +34,59 @@ public class PantryManager extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
-    public boolean addToPantry(Ingredient ingredient, Integer qtToAdd){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COLUMN_ID, 0); //TODO: make this unique for more ingredients
-        cv.put(COLUMN_BARCODE, ingredient.getBarcode());
-        cv.put(COLUMN_INGREDIENT_NAME, ingredient.getName());
-        cv.put(COLUMN_IMAGE_URL, ingredient.getImageUrl());
-        cv.put(COLUMN_QUANTITY_IN_PANTRY, qtToAdd);
-        long insert = db.insert(PANTRY_TABLE, null, cv);
-        return insert == 1;
+    public boolean addToPantry(String barcode, Integer qtToAdd){
+        return addToPantry(getIngredient(barcode), qtToAdd);
     }
 
-    public boolean addToDatabase(Ingredient ingredient){
+    public boolean addToPantry(Ingredient ingredient, Integer qtToAdd){
+        if(!isInDatabase(ingredient)){
+            if(!addToDatabase(ingredient)) {
+                throw new RuntimeException(); //TODO: add some more meaningful messages
+            }
+        }
+        Ingredient oldIngredient = getIngredient(ingredient.getBarcode());
+        int newQty = oldIngredient.getQtInPantry() + qtToAdd;
+        return updateIngredientQuantity(ingredient, newQty);
+    }
+    private boolean updateIngredientQuantity(Ingredient ingredient, int newQuantity) {
+        ingredient.setQtInPantry(newQuantity);
+        ContentValues cv = contentValuesBuilder(ingredient);
         SQLiteDatabase db = this.getWritableDatabase();
+        long update = db.update(PANTRY_TABLE, cv, COLUMN_BARCODE + " = '" + ingredient.getBarcode() + "'", null);
+        return update == 1;
+    }
+    public ContentValues contentValuesBuilder(Ingredient ingredient){
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_BARCODE, ingredient.getBarcode());
         cv.put(COLUMN_INGREDIENT_NAME, ingredient.getName());
         cv.put(COLUMN_IMAGE_URL, ingredient.getImageUrl());
         cv.put(COLUMN_QUANTITY_IN_PANTRY, ingredient.getQtInPantry());
+        return cv;
+    }
+
+    public boolean addToDatabase(Ingredient ingredient){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = contentValuesBuilder(ingredient);
         long insert = db.insert(PANTRY_TABLE, null, cv);
         return insert == 1;
     }
 
+    public boolean deleteFromDatabase(Ingredient ingredient){
+        return deleteFromDatabase(ingredient.getBarcode());
+    }
+
+    public boolean deleteFromDatabase(String barcode){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + PANTRY_TABLE + " WHERE " + COLUMN_BARCODE + " = " + barcode;
+        Cursor c = db.rawQuery(query, null);
+        return c.moveToFirst();
+    }
+
     public boolean isInDatabase(String barcode){
-        return false;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + PANTRY_TABLE + " WHERE " + COLUMN_BARCODE + " = '" + barcode + "'";
+        Cursor c = db.rawQuery(query, null);
+        return c.getCount() != 0;
     }
 
     public Ingredient getIngredient(String barcode){
@@ -83,6 +109,6 @@ public class PantryManager extends SQLiteOpenHelper {
         throw new RuntimeException(); // TODO: do something other than just throw an exception with no info
     }
     public boolean isInDatabase(Ingredient ingredient){
-        return false;
+        return isInDatabase(ingredient.getBarcode());
     }
 }

@@ -100,8 +100,8 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
     }
 
     @Override
-    public void getQuantityToChange(int mQuantityToChange) {
-        Integer quantityToAdd = mQuantityToChange;
+    public void getQuantityToChange(String barcode, int mQuantityToChange) {
+        manager.addToPantry(barcode, mQuantityToChange);
     }
 
     @Override

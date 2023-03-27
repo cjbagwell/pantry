@@ -79,7 +79,7 @@ public class PopUpDialog extends AppCompatDialogFragment {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.getQuantityToChange(quantityToChange);
+                        listener.getQuantityToChange(barcode, quantityToChange);
                     }
                 });
         return builder.create();
@@ -109,7 +109,7 @@ public class PopUpDialog extends AppCompatDialogFragment {
     }
 
     public interface PopUpDialogListener {
-        void getQuantityToChange(int mQuantityToChange);
+        void getQuantityToChange(String barcode, int mQuantityToChange);
     }
 }
 
