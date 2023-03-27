@@ -24,19 +24,21 @@ import com.google.mlkit.vision.common.InputImage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AddIngredientActivity extends AppCompatActivity implements PantryCommunicatorCallback {
+public class AddIngredientActivity extends AppCompatActivity implements PantryCommunicatorCallback, PopUpDialog.PopUpDialogListener{
 
     CameraSourceConfig cameraSourceConfig;
     TextView textView;
     BarcodeScanner barcodeScanner;
     BarcodeScannerOptions barcodeScannerOptions;
     PreviewView previewView;
+    PantryManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ingredient);
-
+        // Create variables
+        manager = new PantryManager(this);
         // Find views
         previewView = findViewById(R.id.preview_view);
         barcodeScannerOptions = new BarcodeScannerOptions
@@ -84,6 +86,26 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
     public void setResult(Ingredient result) {
         System.out.println("We got an Asnyc Result!");
         Toast.makeText(this, "We Got an Result", Toast.LENGTH_LONG).show();
+        openPopUpDialog(result);
         barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
+    }
+
+    public void openPopUpDialog(Ingredient ingredient){
+        Bundle bundle = new Bundle();
+        bundle.putString("barcode", ingredient.getBarcode());
+
+        PopUpDialog popUpDialog = new PopUpDialog();
+        popUpDialog.setArguments(bundle);
+        popUpDialog.show(getSupportFragmentManager(), "pop up dialog");
+    }
+
+    @Override
+    public void getQuantityToChange(int mQuantityToChange) {
+        Integer quantityToAdd = mQuantityToChange;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }
