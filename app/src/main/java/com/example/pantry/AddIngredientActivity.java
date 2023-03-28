@@ -1,5 +1,7 @@
 package com.example.pantry;
+
 import android.Manifest;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.view.PreviewView;
@@ -24,7 +26,7 @@ import com.google.mlkit.vision.common.InputImage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AddIngredientActivity extends AppCompatActivity implements PantryCommunicatorCallback, PopUpDialog.PopUpDialogListener{
+public class AddIngredientActivity extends AppCompatActivity implements PantryCommunicatorCallback, PopUpDialog.PopUpDialogListener {
 
     CameraSourceConfig cameraSourceConfig;
     TextView textView;
@@ -56,11 +58,11 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
                 task.addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                     @Override
                     public void onSuccess(List<Barcode> barcodes) {
-                        if (barcodes.isEmpty()){
+                        if (barcodes.isEmpty()) {
                             return;
                         }
                         barcodeScanner.close();
-                        cameraXSource.close();
+                        cameraXSource.stop();
                         PantryCommunicator communicator = new PantryCommunicator();//.setInstance(AddIngredientActivity.this);
                         communicator.setInstance(AddIngredientActivity.this);
 //                        communicator.execute("049000000443"); // Cocacola bottle upc for testing
@@ -75,26 +77,27 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
                 .setFacing(CameraSourceConfig.CAMERA_FACING_BACK)
                 .build();
         cameraXSource = new CameraXSource(cameraSourceConfig, previewView);
-        if(ActivityCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             textView.setText("Permission to use camera not granted");
             return;
         }
-        try{
+        try {
             cameraXSource.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//onCreate
+
     @Override
     public void setResult(Ingredient result) {
         System.out.println("We got an Asnyc Result!");
         Toast.makeText(this, "We Got an Result", Toast.LENGTH_LONG).show();
         openPopUpDialog(result);
-        barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
+//        barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
     }
 
-    public void openPopUpDialog(Ingredient ingredient){
+    public void openPopUpDialog(Ingredient ingredient) {
         Bundle bundle = new Bundle();
         bundle.putString("barcode", ingredient.getBarcode());
 
@@ -104,8 +107,20 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
     }
 
     @Override
-    public void getQuantityToChange(String barcode, int mQuantityToChange) {
+    public void getPopUpResult(String barcode, int mQuantityToChange) {
         manager.addToPantry(barcode, mQuantityToChange);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
+        cameraXSource.start();
     }
 
     @Override

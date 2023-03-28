@@ -7,14 +7,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import java.io.IOException;
 
 public class PopUpDialog extends AppCompatDialogFragment {
     private TextView mNameTextView;
@@ -79,7 +77,7 @@ public class PopUpDialog extends AppCompatDialogFragment {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.getQuantityToChange(barcode, quantityToChange);
+                        listener.getPopUpResult(barcode, quantityToChange);
                     }
                 });
         return builder.create();
@@ -109,7 +107,7 @@ public class PopUpDialog extends AppCompatDialogFragment {
     }
 
     public interface PopUpDialogListener {
-        void getQuantityToChange(String barcode, int mQuantityToChange);
+        void getPopUpResult(String barcode, int mQuantityToChange);
     }
 }
 
