@@ -18,6 +18,13 @@ public class PantryManager extends SQLiteOpenHelper {
     public static final String COLUMN_INGREDIENT_NAME = "INGREDIENT_NAME";
     public static final String COLUMN_IMAGE_URL = "IMAGE_URL";
     public static final String COLUMN_QUANTITY_IN_PANTRY = "QUANTITY_IN_PANTRY";
+    public static final String COLUMN_CARBS    = "CARBS";
+    public static final String COLUMN_FATS     = "COLUMN_FATS";
+    public static final String COLUMN_PROTEIN  = "PROTEIN";
+    public static final String COLUMN_SUGARS   = "SUGARS";
+    public static final String COLUMN_CALORIES = "CALORIES";
+    public static final String COLUMN_STORES   = "QUANTITY_IN_PANTRY";
+    public static final String COLUMN_BRANDS   = "BRANDS";
 
     public PantryManager(@Nullable Context context) {
         super(context, "pantry.db", null, 1);
@@ -30,7 +37,14 @@ public class PantryManager extends SQLiteOpenHelper {
                 COLUMN_BARCODE + " TEXT PRIMARY KEY, " +
                 COLUMN_INGREDIENT_NAME + " TEXT, " +
                 COLUMN_IMAGE_URL + " TEXT, " +
-                COLUMN_QUANTITY_IN_PANTRY + " INTEGER" +
+                COLUMN_QUANTITY_IN_PANTRY + " INTEGER, " +
+                COLUMN_CARBS + " REAL, " +
+                COLUMN_BRANDS + " TEXT, " +
+                COLUMN_CALORIES + " REAL, " +
+                COLUMN_FATS + " REAL, " +
+                COLUMN_PROTEIN + " REAL, " +
+//                COLUMN_STORES + " TEXT, " +
+                COLUMN_SUGARS + " REAL" +
                 ")";
         db.execSQL(createTableStatement);
     }
@@ -61,10 +75,17 @@ public class PantryManager extends SQLiteOpenHelper {
     }
     public ContentValues contentValuesBuilder(Ingredient ingredient){
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_BARCODE, ingredient.getBarcode());
-        cv.put(COLUMN_INGREDIENT_NAME, ingredient.getName());
-        cv.put(COLUMN_IMAGE_URL, ingredient.getImageUrl());
+        cv.put(COLUMN_BARCODE,            ingredient.getBarcode());
+        cv.put(COLUMN_INGREDIENT_NAME,    ingredient.getName());
+        cv.put(COLUMN_IMAGE_URL,          ingredient.getImageUrl());
         cv.put(COLUMN_QUANTITY_IN_PANTRY, ingredient.getQtInPantry());
+        cv.put(COLUMN_CARBS,    ingredient.getCarbs());
+        cv.put(COLUMN_BRANDS,   ingredient.getBrand());
+        cv.put(COLUMN_CALORIES, ingredient.getCalories());
+        cv.put(COLUMN_FATS,     ingredient.getFats());
+        cv.put(COLUMN_PROTEIN,  ingredient.getProtein());
+//        cv.put(COLUMN_STORES, ingredient.getStores()); // TODO: need to implement a way to store the stores into the table
+        cv.put(COLUMN_SUGARS,   ingredient.getSugars());
         return cv;
     }
 
@@ -125,10 +146,25 @@ public class PantryManager extends SQLiteOpenHelper {
         int nameIndex = c.getColumnIndex(COLUMN_INGREDIENT_NAME);
         int imageUrlIndex = c.getColumnIndex(COLUMN_IMAGE_URL);
         int quantityInPantryIndex = c.getColumnIndex(COLUMN_QUANTITY_IN_PANTRY);
+        int carbsIndex = c.getColumnIndex(COLUMN_CARBS);
+        int brandsIndex = c.getColumnIndex(COLUMN_BRANDS);
+        int caloriesIndex = c.getColumnIndex(COLUMN_CALORIES);
+        int fatsIndex = c.getColumnIndex(COLUMN_FATS);
+        int proteinIndex = c.getColumnIndex(COLUMN_PROTEIN);
+//        int storesIndex = c.getColumnIndex(COLUMN_STORES);
+        int surgarsIndex = c.getColumnIndex(COLUMN_SUGARS);
 
-        return new Ingredient(c.getString(barcodeIndex),
-                c.getString(nameIndex),
-                c.getString(imageUrlIndex),
-                c.getInt(quantityInPantryIndex));
+        Ingredient ingredient = new Ingredient(c.getString(barcodeIndex));
+        ingredient.setBrand(c.getString(brandsIndex));
+        ingredient.setFats(c.getDouble(fatsIndex));
+        ingredient.setCarbs(c.getDouble(carbsIndex));
+        ingredient.setImageUrl(c.getString(imageUrlIndex));
+        ingredient.setCalories(c.getDouble(caloriesIndex));
+//        ingredient.setStores(c.getString(storesIndex));
+        ingredient.setQtInPantry(c.getInt(quantityInPantryIndex));
+        ingredient.setName(c.getString(nameIndex));
+        ingredient.setSugars(c.getDouble(surgarsIndex));
+        ingredient.setProtein(c.getDouble(proteinIndex));
+        return ingredient;
     }
 }

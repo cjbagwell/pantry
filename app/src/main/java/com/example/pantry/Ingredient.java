@@ -11,14 +11,40 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class Ingredient {
+    private double sugars;
     private String barcode;
     private String name;
     private String imageUrl;
 //    private Bitmap image;
     private int qtInPantry;
+    private double carbs;
+    private double fats;
+    private double protein;
+    private double calories;
+    private LinkedList<String> stores;
+    private String brand;
 
+    public Ingredient(String barcode, String name, String imageUrl, int qtInPantry, double carbs, double sugars, double fats, double protein, double calories, LinkedList<String> stores, String brand) {
+        this.barcode = barcode;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.qtInPantry = qtInPantry;
+        this.carbs = carbs;
+        this.sugars = sugars;
+        this.fats = fats;
+        this.protein = protein;
+        this.calories = calories;
+        this.stores = stores;
+        this.brand = brand;
+    }
+    public Ingredient(String barcode){
+        this(barcode, "Unknown", "", 0, -1, -1, -1, -1, -1, null, "Unknown");
+        stores = new LinkedList<String>();
+        stores.add("Unknown");
+    }
     Ingredient(String bar, String nam, String imageUrl, int qtInPan){
         this.barcode = bar;
         this.name = nam;
@@ -52,36 +78,73 @@ public class Ingredient {
     }
 
     // ********************* GETTERS AND SETTERS *****************************
-
     public String getBarcode() {
         return barcode;
     }
-
     public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getImageUrl() {
         return imageUrl;
     }
-
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    public double getCarbs() {
+        return carbs;
+    }
+    public void setCarbs(double carbs) {
+        this.carbs = carbs;
+    }
+    public double getFats() {
+        return fats;
+    }
+    public void setFats(double fats) {
+        this.fats = fats;
+    }
+    public double getProtein() {
+        return protein;
+    }
+    public void setProtein(double protein) {
+        this.protein = protein;
+    }
+    public double getCalories() {
+        return calories;
+    }
+    public void setCalories(double calories) {
+        this.calories = calories;
+    }
+    public LinkedList<String> getStores() {
+        return stores;
+    }
+    public void setStores(LinkedList<String> stores) {
+        stores = stores;
+    }
+    public String getBrand() {
+        return brand;
+    }
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
     public void setImage(String image) {
         this.imageUrl = image;
     }
-
     public int getQtInPantry() {
         return qtInPantry;
     }
-
     public void setQtInPantry(int qtInPantry) {
         this.qtInPantry = qtInPantry;
+    }
+    public double getSugars() {
+        return sugars;
+    }
+    public void setSugars(double sugars) {
+        this.sugars = sugars;
     }
 }

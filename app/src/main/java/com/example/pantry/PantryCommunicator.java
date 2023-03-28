@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -57,29 +58,37 @@ public class PantryCommunicator extends AsyncTask<String, Void, Ingredient> {
             return null;
         }
 
+        // Create Default ingredient
+        Ingredient newIngredient = new Ingredient(upc[0]);
+
         // Parse the Json Object
         try {
             jsonObject = new JSONObject(jsonResponse);
             JSONObject product = jsonObject.getJSONObject("product");
-            String label = (String) product.get("product_name");
-            String brand = (String) product.get("brands");
-//            String category = (String) product.get("category");
-            String image = (String) product.get("image_front_url");
-
-            // Nutrition Information
-            JSONObject nutriments = product.getJSONObject("nutriments");
-            double carbs_100g   = nutriments.getDouble("carbohydrates_100g");
-            double protien_100g = nutriments.getDouble("proteins_100g");
-            double fats_100g    = nutriments.getDouble("fat_100g");
-            double calories     = nutriments.getDouble("energy-kcal_100g");
-
-            Ingredient newIngredient = new Ingredient(upc[0], label, image, 0);
-            manager.addToDatabase(newIngredient);
-            return newIngredient;
+            String states = product.getString("states");
+            if(states.contains("product-name-completed")){
+                newIngredient.setName(product.getString("product_name"));
+            }
+            if(states.contains("brands-completed")){
+                newIngredient.setBrand(product.getString("brands"));
+            }
+            if(states.contains("front-photo-selected")) {
+                newIngredient.setImageUrl(product.getString("image_front_url"));
+            }
+            if(states.contains("nutrition-facts-completed")) {
+                JSONObject nutriments = product.getJSONObject("nutriments");
+                newIngredient.setCarbs(   nutriments.getDouble("carbohydrates_100g"));
+                newIngredient.setProtein( nutriments.getDouble("proteins_100g"));
+                newIngredient.setFats(    nutriments.getDouble("fat_100g"));
+                newIngredient.setCalories(nutriments.getDouble("energy-kcal_100g"));
+                newIngredient.setSugars(  nutriments.getDouble("sugars_100g"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+        manager.addToDatabase(newIngredient);
+        return newIngredient;
     }
 
     @Override
