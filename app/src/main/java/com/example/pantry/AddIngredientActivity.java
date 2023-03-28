@@ -91,10 +91,25 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
 
     @Override
     public void setResult(Ingredient result) {
-        System.out.println("We got an Asnyc Result!");
-        Toast.makeText(this, "We Got an Result", Toast.LENGTH_LONG).show();
+        // If the ingredient is not in the database, restart the camera and present a message
+        if (result == null) {
+            Toast.makeText(this, "Ingredient does not exist in the online database :(", Toast.LENGTH_LONG).show();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
+            cameraXSource.start();
+            return;
+        }
+        Toast.makeText(this, "We got a result", Toast.LENGTH_LONG).show();
         openPopUpDialog(result);
-//        barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
     }
 
     public void openPopUpDialog(Ingredient ingredient) {

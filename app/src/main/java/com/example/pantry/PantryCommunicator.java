@@ -50,7 +50,14 @@ public class PantryCommunicator extends AsyncTask<String, Void, Ingredient> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        // Check if the product was found
         JSONObject jsonObject = null;
+        if(jsonResponse.contains("product not found")){
+            return null;
+        }
+
+        // Parse the Json Object
         try {
             jsonObject = new JSONObject(jsonResponse);
             JSONObject product = jsonObject.getJSONObject("product");
