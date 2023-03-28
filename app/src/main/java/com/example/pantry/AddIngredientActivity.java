@@ -64,7 +64,8 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
                         PantryCommunicator communicator = new PantryCommunicator();//.setInstance(AddIngredientActivity.this);
                         communicator.setInstance(AddIngredientActivity.this);
 //                        communicator.execute("049000000443"); // Cocacola bottle upc for testing
-                        communicator.execute("078742351865"); // Milk upc for testing
+//                        communicator.execute("078742351865"); // Milk upc for testing
+                        communicator.execute(barcodes.get(0).getRawValue());
                         Toast.makeText(AddIngredientActivity.this, "We are sending a result", Toast.LENGTH_SHORT);
                     }
                 });

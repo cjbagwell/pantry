@@ -14,9 +14,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class PantryCommunicator extends AsyncTask<String, Void, Ingredient> {
-    private final String API_KEY = "2a3f64a61dd57a26bf473ae4fe69410b";
-    private final String API_ID = "3a6ef20f";
-    private final String BASE_URL = "https://api.edamam.com/api/food-database";
+    //private final String API_KEY = "2a3f64a61dd57a26bf473ae4fe69410b";
+    //private final String API_ID = "3a6ef20f";
+    private final String BASE_URL = "https://world.openfoodfacts.org/api/v0/product/";
     private PantryCommunicatorCallback pantryCommunicatorCallback;
     private Context ctx;
 
@@ -32,9 +32,7 @@ public class PantryCommunicator extends AsyncTask<String, Void, Ingredient> {
             return manager.getIngredient(upc[0]);
         }
         //else get ingredient from API call to Edamam
-        String parseUrl = this.BASE_URL + "/parser?upc=" + upc[0] +
-                "/&app_id=" + API_ID +
-                "&app_key=" + API_KEY;
+        String parseUrl = this.BASE_URL + upc[0] + ".json";
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(parseUrl)
@@ -55,14 +53,19 @@ public class PantryCommunicator extends AsyncTask<String, Void, Ingredient> {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(jsonResponse);
-            JSONArray array = jsonObject.getJSONArray("hints");
-            JSONObject obj1 = array.getJSONObject(0);
-            JSONObject obj2 = obj1.getJSONObject("food");
-            String label = (String) obj2.get("label");
-            String brand = (String) obj2.get("brand");
-            String category = (String) obj2.get("category");
-            String image = (String) obj2.get("image");
-            String foodContents = (String) obj2.get("foodContentsLabel");
+            JSONObject product = jsonObject.getJSONObject("product");
+            String label = (String) product.get("product_name");
+            String brand = (String) product.get("brands");
+//            String category = (String) product.get("category");
+            String image = (String) product.get("image_front_url");
+
+            // Nutrition Information
+            JSONObject nutriments = product.getJSONObject("nutriments");
+            double carbs_100g   = nutriments.getDouble("carbohydrates_100g");
+            double protien_100g = nutriments.getDouble("proteins_100g");
+            double fats_100g    = nutriments.getDouble("fat_100g");
+            double calories     = nutriments.getDouble("energy-kcal_100g");
+
             Ingredient newIngredient = new Ingredient(upc[0], label, image, 0);
             manager.addToDatabase(newIngredient);
             return newIngredient;
