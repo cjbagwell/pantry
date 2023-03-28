@@ -8,6 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class PantryManager extends SQLiteOpenHelper {
     public static final String PANTRY_TABLE = "PANTRY_TABLE";
     public static final String COLUMN_BARCODE = "BARCODE";
@@ -93,22 +97,38 @@ public class PantryManager extends SQLiteOpenHelper {
         String query = "select * from " + PANTRY_TABLE + " where " + COLUMN_BARCODE + "='" + barcode + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c =  db.rawQuery(query , null);
-
-        int barcodeIndex = c.getColumnIndex(COLUMN_BARCODE);
-        int nameIndex = c.getColumnIndex(COLUMN_INGREDIENT_NAME);
-        int imageUrlIndex = c.getColumnIndex(COLUMN_IMAGE_URL);
-        int quantityInPantryIndex = c.getColumnIndex(COLUMN_QUANTITY_IN_PANTRY);
-
         if(c.moveToFirst()){
-            Ingredient ingredient = new Ingredient(c.getString(barcodeIndex),
-                    c.getString(nameIndex),
-                    c.getString(imageUrlIndex),
-                    c.getInt(quantityInPantryIndex));
-            return ingredient;
+            return getIngredientFromCursor(c);
         }
         throw new RuntimeException(); // TODO: do something other than just throw an exception with no info
     }
     public boolean isInDatabase(Ingredient ingredient){
         return isInDatabase(ingredient.getBarcode());
+    }
+
+    public ArrayList<Ingredient> getAllPantryIngredients(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + PANTRY_TABLE + " WHERE " + COLUMN_QUANTITY_IN_PANTRY + " > 0";
+        Cursor cursor =  db.rawQuery(query, null);
+        cursor.moveToFirst();
+        ArrayList<Ingredient> ingredients = new ArrayList<>(cursor.getCount());
+        do{
+            if(!ingredients.add(getIngredientFromCursor(cursor))){
+                throw new RuntimeException(); //TODO: Do something more meaningful here
+            };
+        } while(cursor.moveToNext());
+        return ingredients;
+    }
+
+    private Ingredient getIngredientFromCursor(Cursor c){
+        int barcodeIndex = c.getColumnIndex(COLUMN_BARCODE);
+        int nameIndex = c.getColumnIndex(COLUMN_INGREDIENT_NAME);
+        int imageUrlIndex = c.getColumnIndex(COLUMN_IMAGE_URL);
+        int quantityInPantryIndex = c.getColumnIndex(COLUMN_QUANTITY_IN_PANTRY);
+
+        return new Ingredient(c.getString(barcodeIndex),
+                c.getString(nameIndex),
+                c.getString(imageUrlIndex),
+                c.getInt(quantityInPantryIndex));
     }
 }

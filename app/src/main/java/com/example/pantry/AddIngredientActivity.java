@@ -32,6 +32,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
     BarcodeScannerOptions barcodeScannerOptions;
     PreviewView previewView;
     PantryManager manager;
+    CameraXSource cameraXSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +60,11 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
                             return;
                         }
                         barcodeScanner.close();
+                        cameraXSource.close();
                         PantryCommunicator communicator = new PantryCommunicator();//.setInstance(AddIngredientActivity.this);
                         communicator.setInstance(AddIngredientActivity.this);
-                        communicator.execute("049000000443"); // Cocacola bottle upc for testing
+//                        communicator.execute("049000000443"); // Cocacola bottle upc for testing
+                        communicator.execute("078742351865"); // Milk upc for testing
                         Toast.makeText(AddIngredientActivity.this, "We are sending a result", Toast.LENGTH_SHORT);
                     }
                 });
@@ -70,7 +73,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
                 .setRequestedPreviewSize(720, 480)
                 .setFacing(CameraSourceConfig.CAMERA_FACING_BACK)
                 .build();
-        CameraXSource cameraXSource = new CameraXSource(cameraSourceConfig, previewView);
+        cameraXSource = new CameraXSource(cameraSourceConfig, previewView);
         if(ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             textView.setText("Permission to use camera not granted");
@@ -108,4 +111,18 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
+    @Override
+    protected void onDestroy() {
+        cameraXSource.close();
+        cameraXSource.stop();
+        barcodeScanner.close();
+
+        super.onDestroy();
+    }
+    @Override
+    public void onBackPressed(){
+        barcodeScanner.close();
+        super.onBackPressed();
+    }
+
 }
