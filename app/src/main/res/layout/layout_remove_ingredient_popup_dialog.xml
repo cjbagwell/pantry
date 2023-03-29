@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_margin="20dp">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
+        android:id="@+id/ingredientImageView"
+        android:layout_alignParentLeft="true"
+        android:padding="30dp"
+        />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageButtonMinus"
+        android:src="@drawable/minus_button"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="75dp"
+        android:layout_toRightOf="@+id/ingredientImageView"
+        android:layout_centerVertical="@+id/ingredientImageView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewQuantity"
+        android:padding="5dp"
+        android:layout_marginTop="75dp"
+        android:layout_toRightOf="@+id/imageButtonMinus"
+        android:text="1"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        />
+
+    <ImageButton
+        android:id="@+id/imageButtonPlus"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/plus_button"
+        android:layout_marginTop="75dp"
+        android:scaleType="fitCenter"
+        android:layout_toRightOf="@id/textViewQuantity"
+        />
+
+    <TextView
+        android:id="@+id/textViewInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imageButtonMinus"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/ingredientImageView"
+        android:layout_centerVertical="@+id/ingredientImageView"
+        android:text="How many do you want to remove from the pantry?" />
+
+</RelativeLayout>
