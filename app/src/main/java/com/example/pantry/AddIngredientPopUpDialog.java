@@ -28,7 +28,7 @@ public class AddIngredientPopUpDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_popup_dialog, null);
+        View view = inflater.inflate(R.layout.layout_add_ingredient_popup_dialog, null);
 
         Bundle recievedBundle = getArguments();
         String barcode = recievedBundle.getString("barcode","");
