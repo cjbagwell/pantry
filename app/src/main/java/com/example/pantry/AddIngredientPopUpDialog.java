@@ -34,8 +34,6 @@ public class AddIngredientPopUpDialog extends AppCompatDialogFragment {
         String barcode = recievedBundle.getString("barcode","");
         PantryManager pm = new PantryManager(getActivity());
         Ingredient ingredient = pm.getIngredient(barcode);
-        mNameTextView = (TextView) view.findViewById(R.id.nameTextView);
-        mNameTextView.setText(ingredient.getName());
 
         mIngredientImageView = (ImageView) view.findViewById(R.id.ingredientImageView);
         ingredient.loadImageIntoImageView(getActivity(), mIngredientImageView);
@@ -67,7 +65,7 @@ public class AddIngredientPopUpDialog extends AppCompatDialogFragment {
         });
 
         builder.setView(view)
-                .setTitle("Ingredient Info")
+                .setTitle(ingredient.getName())
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

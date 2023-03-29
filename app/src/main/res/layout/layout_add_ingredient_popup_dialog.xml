@@ -3,23 +3,12 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:layout_margin="20dp">
 
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        />
-
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:scaleType="fitCenter"
         android:id="@+id/ingredientImageView"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/nameTextView"
         android:padding="30dp"
         />
 
@@ -55,4 +44,16 @@
         android:scaleType="fitCenter"
         android:layout_toRightOf="@id/textViewQuantity"
         />
+
+    <TextView
+        android:id="@+id/textViewInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imageButtonMinus"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/ingredientImageView"
+        android:layout_centerVertical="@+id/ingredientImageView"
+        android:text="How many do you want to add to the pantry?" />
+
 </RelativeLayout>
