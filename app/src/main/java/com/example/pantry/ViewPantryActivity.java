@@ -43,7 +43,7 @@ public class ViewPantryActivity extends AppCompatActivity {
     }
 
     public void changeIngredientName(int position, String text) {
-//        pantry.get(position).changeName(text);
+        pantry.get(position).setName(text);
         mAdapter.notifyItemChanged(position);
     }
 

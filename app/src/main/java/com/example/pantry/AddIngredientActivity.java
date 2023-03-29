@@ -23,10 +23,9 @@ import com.google.mlkit.vision.camera.CameraXSource;
 import com.google.mlkit.vision.camera.DetectionTaskCallback;
 import com.google.mlkit.vision.common.InputImage;
 
-import java.util.LinkedList;
 import java.util.List;
 
-public class AddIngredientActivity extends AppCompatActivity implements PantryCommunicatorCallback, PopUpDialog.PopUpDialogListener {
+public class AddIngredientActivity extends AppCompatActivity implements PantryCommunicatorCallback, AddIngredientPopUpDialog.PopUpDialogListener {
 
     CameraSourceConfig cameraSourceConfig;
     TextView textView;
@@ -116,7 +115,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
         Bundle bundle = new Bundle();
         bundle.putString("barcode", ingredient.getBarcode());
 
-        PopUpDialog popUpDialog = new PopUpDialog();
+        AddIngredientPopUpDialog popUpDialog = new AddIngredientPopUpDialog();
         popUpDialog.setArguments(bundle);
         popUpDialog.show(getSupportFragmentManager(), "pop up dialog");
     }

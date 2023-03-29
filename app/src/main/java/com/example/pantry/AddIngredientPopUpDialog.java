@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class PopUpDialog extends AppCompatDialogFragment {
+public class AddIngredientPopUpDialog extends AppCompatDialogFragment {
     private TextView mNameTextView;
     private TextView mQuantityTextView;
     private ImageView mIngredientImageView;
