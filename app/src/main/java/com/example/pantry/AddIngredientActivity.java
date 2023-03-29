@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
     PreviewView previewView;
     PantryManager manager;
     CameraXSource cameraXSource;
+    ImageView imageViewCheckMark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
         manager = new PantryManager(this);
         // Find views
         previewView = findViewById(R.id.preview_view);
+        imageViewCheckMark = findViewById(R.id.imageViewCheckMark);
         barcodeScannerOptions = new BarcodeScannerOptions
                 .Builder()
                 .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
@@ -62,6 +65,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
                         }
                         barcodeScanner.close();
                         cameraXSource.stop();
+                        imageViewCheckMark.setVisibility(ImageView.VISIBLE);
                         PantryCommunicator communicator = new PantryCommunicator();//.setInstance(AddIngredientActivity.this);
                         communicator.setInstance(AddIngredientActivity.this);
 //                        communicator.execute("049000000443"); // Cocacola bottle upc for testing
@@ -103,6 +107,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+            imageViewCheckMark.setVisibility(ImageView.GONE);
             barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
             cameraXSource.start();
             return;
@@ -133,6 +138,7 @@ public class AddIngredientActivity extends AppCompatActivity implements PantryCo
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        imageViewCheckMark.setVisibility(ImageView.GONE);
         barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions);
         cameraXSource.start();
     }
