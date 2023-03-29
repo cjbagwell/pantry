@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_margin="20dp">
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ingredientImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/textViewName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:padding="30dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/textViewNutritionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ingredientImageView"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/ingredientImageView"
+        android:padding="5dp"
+        android:text="Nutrition Facts"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/textViewCarbs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewNutritionHeader"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/ingredientImageView" />
+
+    <TextView
+        android:id="@+id/textViewFats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewCarbs"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/ingredientImageView" />
+
+    <TextView
+        android:id="@+id/textViewProtein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewFats"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/ingredientImageView" />
+
+    <TextView
+        android:id="@+id/textViewSugars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewProtein"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/ingredientImageView" />
+
+    <TextView
+        android:id="@+id/textViewPantryInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ingredientImageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        android:text="Pantry"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/textViewQuantityInPantry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewPantryInformation"
+        android:layout_alignStart="@+id/textViewPantryInformation"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewQuantityInDefaultPantry"
+        android:layout_below="@+id/textViewQuantityInPantry"
+        android:layout_alignStart="@+id/textViewPantryInformation"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+
+        />
+
+    <TextView
+        android:id="@+id/textViewProductInformationHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewPantryInformation"
+        android:layout_alignParentEnd="true"
+
+        android:layout_marginTop="0dp"
+
+        android:text="Product Information"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewBrand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewProductInformationHeader"
+        android:layout_alignStart="@+id/textViewProductInformationHeader"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp" />
+
+
+
+</RelativeLayout>

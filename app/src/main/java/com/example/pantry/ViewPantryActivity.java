@@ -60,9 +60,19 @@ public class ViewPantryActivity extends AppCompatActivity {
         mAdapter.setOnItemClickListener(new IngredientAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                changeIngredientName(position, "Clicked");
+//                changeIngredientName(position, "Clicked");
+                openPopUpDialog(pantry.get(position));
             }
         });
+    }
+
+    public void openPopUpDialog(Ingredient ingredient) {
+        Bundle bundle = new Bundle();
+        bundle.putString("barcode", ingredient.getBarcode());
+
+        ViewIngredientPopUpDialog popUpDialog = new ViewIngredientPopUpDialog();
+        popUpDialog.setArguments(bundle);
+        popUpDialog.show(getSupportFragmentManager(), "view ingredient pop up dialog");
     }
 //
 //    @Override
