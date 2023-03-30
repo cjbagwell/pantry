@@ -11,7 +11,6 @@ public class MainActivity extends AppCompatActivity {
 private Button addIngredientButton;
 private Button removeIngredientButton;
 private Button viewPantryButton;
-private Button refillPantryButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +20,6 @@ private Button refillPantryButton;
         addIngredientButton     = (Button) findViewById(R.id.addIngredientButton);
         removeIngredientButton  = (Button) findViewById(R.id.removeIngredientButton);
         viewPantryButton        = (Button) findViewById(R.id.viewPantryButton);
-        refillPantryButton      = (Button) findViewById(R.id.refillPantryButton);
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,15 +40,6 @@ private Button refillPantryButton;
                 openViewPantryActivity();
             }
         });
-
-        refillPantryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openRefillPantryActivity();
-            }
-        });
-
-
     }
     public void openAddIngredientActivity(){
         Intent intent = new Intent(this, AddIngredientActivity.class);
@@ -62,10 +51,6 @@ private Button refillPantryButton;
     }
     public void openViewPantryActivity(){
         Intent intent = new Intent(this, ViewPantryActivity.class);
-        startActivity(intent);
-    }
-    public void openRefillPantryActivity(){
-        Intent intent = new Intent(this, RefillPantryActivity.class);
         startActivity(intent);
     }
 }
