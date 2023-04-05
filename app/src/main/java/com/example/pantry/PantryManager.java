@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PantryManager extends SQLiteOpenHelper {
+
+    //Initialize Hard Coded String for Querying Database
     public static final String PANTRY_TABLE = "PANTRY_TABLE";
     public static final String COLUMN_BARCODE = "BARCODE";
     public static final String COLUMN_INGREDIENT_NAME = "INGREDIENT_NAME";
@@ -32,6 +34,7 @@ public class PantryManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //Query to create table
         String createTableStatement = "CREATE TABLE " + PANTRY_TABLE +
                 " (" +
                 COLUMN_BARCODE + " TEXT PRIMARY KEY, " +
@@ -46,6 +49,8 @@ public class PantryManager extends SQLiteOpenHelper {
 //                COLUMN_STORES + " TEXT, " +
                 COLUMN_SUGARS + " REAL" +
                 ")";
+
+                //Execute Query
         db.execSQL(createTableStatement);
     }
 
@@ -66,10 +71,17 @@ public class PantryManager extends SQLiteOpenHelper {
         int newQty = oldIngredient.getQtInPantry() + qtToAdd;
         return updateIngredientQuantity(ingredient, newQty);
     }
+
+    //Updates the quantity of the ingredient in the database
     private boolean updateIngredientQuantity(Ingredient ingredient, int newQuantity) {
+        //Fetch new Quantity of the Ingredient 
         ingredient.setQtInPantry(newQuantity);
         ContentValues cv = contentValuesBuilder(ingredient);
+
+        //Fetch the Database
         SQLiteDatabase db = this.getWritableDatabase();
+
+        //Update the Ingredient Quantity based on the Barcode
         long update = db.update(PANTRY_TABLE, cv, COLUMN_BARCODE + " = '" + ingredient.getBarcode() + "'", null);
         return update == 1;
     }
@@ -89,34 +101,53 @@ public class PantryManager extends SQLiteOpenHelper {
         return cv;
     }
 
+    //Adds an ingredient to the database
     public boolean addToDatabase(Ingredient ingredient){
+        //Fetch the Database
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = contentValuesBuilder(ingredient);
+
+        //Insert the Ingredient into the Database
         long insert = db.insert(PANTRY_TABLE, null, cv);
         return insert == 1;
     }
 
+    //Retrieves the barcode of an ingredient then deletes it from the database
     public boolean deleteFromDatabase(Ingredient ingredient){
         return deleteFromDatabase(ingredient.getBarcode());
     }
 
+    //Deletes an ingredient from the database based on the barcode
     public boolean deleteFromDatabase(String barcode){
+        //Fetch the Database
         SQLiteDatabase db = this.getWritableDatabase();
+
+        //Delete the Ingredient from the Database based on the Barcode
         String query = "DELETE FROM " + PANTRY_TABLE + " WHERE " + COLUMN_BARCODE + " = " + barcode;
         Cursor c = db.rawQuery(query, null);
         return c.moveToFirst();
     }
 
+    //Returns the count of the number of ingredients in the database
     public boolean isInDatabase(String barcode){
+        //Fetch the Database
         SQLiteDatabase db = this.getReadableDatabase();
+
+        //Displays the Ingredients based on the Barcode
         String query = "SELECT * FROM " + PANTRY_TABLE + " WHERE " + COLUMN_BARCODE + " = '" + barcode + "'";
         Cursor c = db.rawQuery(query, null);
         return c.getCount() != 0;
     }
 
+    //Returns an ingredient from the database based on the barcode
     public Ingredient getIngredient(String barcode){
+        //Prepare the Query
         String query = "select * from " + PANTRY_TABLE + " where " + COLUMN_BARCODE + "='" + barcode + "'";
+        
+        //Fetch the Database
         SQLiteDatabase db = this.getReadableDatabase();
+
+        //Execute the Query
         Cursor c =  db.rawQuery(query , null);
         if(c.moveToFirst()){
             return getIngredientFromCursor(c);
@@ -127,11 +158,17 @@ public class PantryManager extends SQLiteOpenHelper {
         return isInDatabase(ingredient.getBarcode());
     }
 
+    //Returns all the ingredients with quantity higher than 1 in the database
     public ArrayList<Ingredient> getAllPantryIngredients(){
+        //Fetch the Database
         SQLiteDatabase db = this.getReadableDatabase();
+
+        //Prepare the Query
         String query = "SELECT * FROM " + PANTRY_TABLE + " WHERE " + COLUMN_QUANTITY_IN_PANTRY + " > 0";
         Cursor cursor =  db.rawQuery(query, null);
         cursor.moveToFirst();
+
+        //Displays Ingredients using ArrayList
         ArrayList<Ingredient> ingredients = new ArrayList<>(cursor.getCount());
         do{
             if(!ingredients.add(getIngredientFromCursor(cursor))){
@@ -141,6 +178,7 @@ public class PantryManager extends SQLiteOpenHelper {
         return ingredients;
     }
 
+    //Returns information about the ingredient from the cursor using the methods in the Ingredient class
     private Ingredient getIngredientFromCursor(Cursor c){
         int barcodeIndex = c.getColumnIndex(COLUMN_BARCODE);
         int nameIndex = c.getColumnIndex(COLUMN_INGREDIENT_NAME);
