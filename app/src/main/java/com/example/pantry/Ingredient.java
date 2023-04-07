@@ -14,20 +14,23 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class Ingredient {
-    private double sugars;
-    private String barcode;
-    private String name;
-    private String imageUrl;
+    protected double sugars;
+    protected String barcode;
+    protected String name;
+    protected String imageUrl;
 //    private Bitmap image;
-    private int qtInPantry;
-    private double carbs;
-    private double fats;
-    private double protein;
-    private double calories;
-    private LinkedList<String> stores;
-    private String brand;
+    protected int qtInPantry;
+    protected double carbs;
+    protected double fats;
+    protected double protein;
+    protected double calories;
+    protected LinkedList<String> stores;
+    protected String brand;
 
-    public Ingredient(String barcode, String name, String imageUrl, int qtInPantry, double carbs, double sugars, double fats, double protein, double calories, LinkedList<String> stores, String brand) {
+    public Ingredient(String barcode, String name, String imageUrl,
+                      int qtInPantry, double carbs, double sugars,
+                      double fats, double protein, double calories,
+                      LinkedList<String> stores, String brand) {
         this.barcode = barcode;
         this.name = name;
         this.imageUrl = imageUrl;
